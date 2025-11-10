@@ -36,10 +36,12 @@
                 <div class="col-1">
                     <a class="btn btn-outline-dark mt-auto" href="#"> Rating </a>
                 </div>
-
-                <div class="col-1">
-                    <a class="btn btn-outline-dark mt-auto" href="{% url 'app:create' %}"> + new </a>
-                </div>
+                
+                {% if user.is_authenticated%}
+                    <div class="col-1">
+                        <a class="btn btn-outline-dark mt-auto" href="{% url 'app:create' %}"> + new </a>
+                    </div>
+                {%endif%}
 
             </div>
         </div>

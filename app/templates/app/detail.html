@@ -13,6 +13,14 @@
                 <div class="row gx-4 gx-lg-5 align-items-center">
                     <div class="col-md-6"><img class="card-img-top mb-5 mb-md-0" src="{{product.get_image_url}}" alt="..." /></div>
                     <div class="col-md-6">
+                        <form method="post" action="{% url 'app:delete' product.id %}">
+                            {%csrf_token%}
+                            <button type="submit" class="btn btn-outline-danger">Delete</button>
+                        </form>
+                        <a href="#">
+                            <button type="submit" class="btn btn-outline-secondary">Edit</button>
+                        </a>
+
                         <div class="small mb-1">Stock : {{product.stock}} </div>
                         <h1 class="display-5 fw-bolder">{{product.name}}</h1>
                         <div class="fs-5 mb-5">

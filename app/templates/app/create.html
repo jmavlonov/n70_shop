@@ -11,6 +11,8 @@
 
 <body>
     <div class="container">
+    
+
         <h2>Create Product</h2>
 
         {% if messages %}
@@ -19,7 +21,7 @@
             {% endfor %}
         {% endif %}
 
-        <form method="post" enctype="multipart/form-data">
+        <form method="post" enctype="multipart/form-data" action="{% url 'app:create' %}">
             {% csrf_token %}
             
             <label for="id_name">Name</label>

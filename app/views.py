@@ -2,6 +2,10 @@ from django.shortcuts import render ,redirect
 from .models import Category , Product
 from django.http import JsonResponse
 from app.forms import ProductModelForm
+from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+
+
 # Create your views here.
 
 
@@ -38,21 +42,40 @@ def detail(request,product_id):
 # name = request.POST.get('name')
 
 
+
+@login_required(login_url='/admin/')
 def create_product(request):
-    
     if request.method == 'POST':
         form = ProductModelForm(request.POST,request.FILES)
         if form.is_valid():
             form.save()
-            return redirect('app:index')
-        
+            messages.add_message(
+                request,
+                messages.SUCCESS,
+                "Product successfully created ✅"
+            )
+            # add messages
+            
+            return redirect('app:create')
     else:
         form = ProductModelForm()
         
-        
+                
     context = {
         'form':form
     }
     return render(request,'app/create.html',context)
 
 
+def delete_product(request,pk):
+    product = Product.objects.get(id = pk)
+    if product:
+        product.delete()
+        return redirect('app:index')    
+    
+    return render(request,'app/detail.html')
+
+
+
+def update_product(request,pk):
+    pass
