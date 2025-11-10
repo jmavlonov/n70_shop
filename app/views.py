@@ -1,6 +1,7 @@
-from django.shortcuts import render
+from django.shortcuts import render ,redirect
 from .models import Category , Product
 from django.http import JsonResponse
+from app.forms import ProductModelForm
 # Create your views here.
 
 
@@ -31,4 +32,27 @@ def detail(request,product_id):
         'product' : product
     }
     return render(request,'app/detail.html',context)
+
+
+
+# name = request.POST.get('name')
+
+
+def create_product(request):
+    
+    if request.method == 'POST':
+        form = ProductModelForm(request.POST,request.FILES)
+        if form.is_valid():
+            form.save()
+            return redirect('app:index')
+        
+    else:
+        form = ProductModelForm()
+        
+        
+    context = {
+        'form':form
+    }
+    return render(request,'app/create.html',context)
+
 

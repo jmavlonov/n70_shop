@@ -15,7 +15,7 @@ class BaseModel(models.Model):
 
 class Category(BaseModel):
     title = models.CharField(max_length=255, unique=True)
-
+    
     def __str__(self):
         return self.title
     

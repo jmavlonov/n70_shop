@@ -1,0 +1,59 @@
+{%load static%}
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yangi Mahsulot Qo‘shish</title>
+    <link href="{% static 'app/css/create.css' %}" rel="stylesheet" />
+   
+</head>
+
+<body>
+    <div class="container">
+        <h2>Create Product</h2>
+
+        {% if messages %}
+            {% for message in messages %}
+                <div class="message">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            
+            <label for="id_name">Name</label>
+            {{ form.name }}
+            {{ form.name.errors }}
+
+            <label for="id_description">Description</label>
+            {{ form.description }}
+            {{ form.description.errors }}
+
+            <label for="id_price">Price</label>
+            {{ form.price }}
+            {{ form.price.errors }}
+
+            <label for="id_stock">Stock</label>
+            {{ form.stock }}
+            {{ form.stock.errors }}
+
+            <label for="id_discount">Discount (%)</label>
+            {{ form.discount }}
+            {{ form.discount.errors }}
+
+            <label for="id_category">Categories</label>
+            {{ form.category }}
+            {{ form.category.errors }}
+
+            <label for="id_image">Image</label>
+            {{ form.image }}
+            {{ form.image.errors }}
+
+            <button type="submit" class="btn">Save</button>
+        </form>
+
+        <a href="{% url 'app:index' %}" class="back">← Back to home</a>
+    </div>
+</body>
+</html>
