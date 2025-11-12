@@ -1,15 +1,15 @@
 from django.shortcuts import render ,redirect
 from .models import Category , Product
 from django.http import JsonResponse
-from app.forms import ProductModelForm
+from app.forms import ProductModelForm,OrderModelForm
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404
 from django.db.models import Q
+from app.utils import filter_by_price
 
 
 # Create your views here.
-
 
 def index(request,category_id = None):
     search_query = request.GET.get('q','')
@@ -25,15 +25,9 @@ def index(request,category_id = None):
     if search_query:
         products = products.filter(Q(name__icontains = search_query) | Q(description__icontains=search_query))
 
-        
-    if filter_type == 'expensive':
-        products = products.order_by('-price')
-        
-    elif filter_type == 'cheap':
-        products = products.order_by('price')
-        
-    else:
-        products = Product.objects.all()
+    products = filter_by_price(filter_type,products)
+    
+    
     
     context = {
         'categories':categories,
@@ -109,3 +103,43 @@ def update_product(request,pk):
         'product':product
     }
     return render(request,'app/update.html',context)
+
+
+
+
+def create_order(request,pk):
+    product = get_object_or_404(Product,pk=pk)
+
+    if request.method == 'POST':
+        print('Order Post sending ....')
+        form = OrderModelForm(request.POST)
+        if form.is_valid():
+            print('form valid')
+            order = form.save(commit=False)
+            order.product = product
+            if order.quantity > product.stock:
+                messages.add_message(
+                    request,
+                    messages.ERROR,
+                    'Dont enough quantity'
+                ) 
+            else:
+                product.stock -= order.quantity 
+                print('order valid ')
+                product.save()
+                order.save()
+                messages.add_message(
+                    request,
+                    messages.ERROR,
+                    'Order successfully sent✅'
+                ) 
+                return redirect('app:detail',product_id)
+    else:
+        form = OrderModelForm()
+
+    context = {
+        'form':form,
+        'product':product
+    }
+
+    return render(request,'app/detail.html',context)
