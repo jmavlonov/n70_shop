@@ -1,6 +1,6 @@
 
 from django.urls import path,include
-from .views import index,detail,create_product,delete_product
+from .views import index,detail,create_product,delete_product,update_product
 
 app_name = 'app'
 
@@ -9,6 +9,7 @@ urlpatterns = [
     path('category/<int:category_id>',index,name='products_of_category'),
     path('detail/<product_id>',detail,name='detail'),
     path('create/',create_product,name='create'),
-    path('delete/<int:pk>',delete_product,name='delete')
+    path('delete/<int:pk>',delete_product,name='delete'),
+    path('update/<int:pk>',update_product,name='update')
 ]
 

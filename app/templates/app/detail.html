@@ -17,7 +17,8 @@
                             {%csrf_token%}
                             <button type="submit" class="btn btn-outline-danger">Delete</button>
                         </form>
-                        <a href="#">
+
+                        <a href="{% url 'app:update' product.id %}">
                             <button type="submit" class="btn btn-outline-secondary">Edit</button>
                         </a>
 
