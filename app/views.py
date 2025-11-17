@@ -133,7 +133,7 @@ def create_order(request,pk):
                     messages.ERROR,
                     'Order successfully sent✅'
                 ) 
-                return redirect('app:detail',product_id)
+                return redirect('app:detail',pk)
     else:
         form = OrderModelForm()
 
@@ -143,3 +143,6 @@ def create_order(request,pk):
     }
 
     return render(request,'app/detail.html',context)
+
+
+# Product.objects.create()
