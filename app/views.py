@@ -39,11 +39,13 @@ def index(request,category_id = None):
 
 def detail(request,product_id):
     product = Product.objects.get(id = product_id)
+    comments = product.comments.filter(is_handle=False)
     if not product:
         return JsonResponse(data={'message':'Oops. Page Not Found','status_code':404})
     
     context = {
-        'product' : product
+        'product' : product,
+        'comments':comments
     }
     return render(request,'app/detail.html',context)
 
@@ -146,3 +148,7 @@ def create_order(request,pk):
 
 
 # Product.objects.create()
+
+
+def create_comment(request,product_id):
+    pass

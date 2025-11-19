@@ -1,9 +1,10 @@
 from django.contrib import admin
-from .models import Category , Product,Order
+from .models import Category , Product,Order,Comment
 from django.utils.html import format_html
 from django.templatetags.static import static
 from import_export.admin import ImportExportModelAdmin
 from adminsortable2.admin import SortableAdminMixin
+
 
 
 # Register your models here.
@@ -56,3 +57,9 @@ class ProductAdmin(SortableAdminMixin,admin.ModelAdmin):
         return obj.stock > 0
     
     is_stock.boolean = True
+
+
+
+@admin.register(Comment)
+class CommentAdmin(admin.ModelAdmin):
+    list_display = ['name','rating']
