@@ -4,6 +4,7 @@ from django.utils.html import format_html
 from django.templatetags.static import static
 from import_export.admin import ImportExportModelAdmin
 from adminsortable2.admin import SortableAdminMixin
+from django.urls import reverse
 
 
 
@@ -62,4 +63,5 @@ class ProductAdmin(SortableAdminMixin,admin.ModelAdmin):
 
 @admin.register(Comment)
 class CommentAdmin(admin.ModelAdmin):
-    list_display = ['name','rating']
+    list_display = ['name','rating','is_handle','product__id']
+    list_editable = ("is_handle",)

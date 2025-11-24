@@ -1,0 +1,14 @@
+Aggregate => 1 ta model uchun umumiy Hisob kitob
+    => return dict
+
+
+
+Duplicate Key(1,10) => 1 =>  
+
+
+max_id => +1 
+
+UUID => uuid4() 
+
+
+Annotate => QuertSet => order_by , filter

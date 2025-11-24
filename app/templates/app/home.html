@@ -63,12 +63,8 @@
                                         <!-- Product name-->
                                         <h5 class="fw-bolder">{{product.name}}</h5>
                                         <!-- Product reviews-->
-                                        <div class="d-flex justify-content-center small text-warning mb-2">
-                                            <div class="bi-star-fill"></div>
-                                            <div class="bi-star-fill"></div>
-                                            <div class="bi-star-fill"></div>
-                                            <div class="bi-star-fill"></div>
-                                            <div class="bi-star-fill"></div>
+                                        <div class="">
+                                           Rating : {{product.avg_rating}}
                                         </div>
                                         <!-- Product price-->
                                         {% if product.discount %}

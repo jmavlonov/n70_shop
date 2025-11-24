@@ -12,6 +12,7 @@ class BaseModel(models.Model):
     class Meta:
         abstract = True
 
+ 
 
 class Category(BaseModel):
     title = models.CharField(max_length=255, unique=True)
@@ -99,7 +100,7 @@ class Comment(BaseModel):
     email = models.EmailField()
     message = models.TextField()
     product = models.ForeignKey(Product,on_delete=models.CASCADE,related_name='comments')
-    file = models.ImageField(upload_to='comments/%Y/%m/%d/',null=True,blank=True)
+    image = models.ImageField(upload_to='comments/%Y/%m/%d/',null=True,blank=True)
     rating = models.PositiveSmallIntegerField(choices=RatingChoices.choices,default = RatingChoices.FIVE)
     is_handle = models.BooleanField(default=False)
     
@@ -109,7 +110,16 @@ class Comment(BaseModel):
         return f'{self.name} - {self.message}'
     
     
+    @property
+    def get_image_url(self):
+        if not self.image:
+            return static('app/images/not_found_image.avif')
+        return self.image.url
+    
+    
     
 
 # admin@gmail.com
-    
+
+
+# Aggregate and annotate
