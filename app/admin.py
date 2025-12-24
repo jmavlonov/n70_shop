@@ -5,6 +5,7 @@ from django.templatetags.static import static
 from import_export.admin import ImportExportModelAdmin
 from adminsortable2.admin import SortableAdminMixin
 from django.urls import reverse
+from parler.admin import TranslatableAdmin
 
 
 
@@ -23,7 +24,7 @@ class ProductInline(admin.StackedInline):
 
 
 @admin.register(Category)
-class CategoryAdmin(ImportExportModelAdmin):
+class CategoryAdmin(TranslatableAdmin):
     list_display = ['id','title','get_products']
     
     inlines = [
@@ -39,9 +40,9 @@ class CategoryAdmin(ImportExportModelAdmin):
 
 
 @admin.register(Product)
-class ProductAdmin(SortableAdminMixin,admin.ModelAdmin):
+class ProductAdmin(TranslatableAdmin):
     list_display = ['name','price','category','is_stock','get_image']
-    list_filter = ['category','updated_at']
+    list_filter = ['category',]
     search_fields = ['name',]
     
     def get_image(self,obj):

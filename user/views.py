@@ -50,9 +50,9 @@ def register_page(request):
         form = RegisterForm(request.POST)
         if form.is_valid():
             user = form.save(commit=False)
-            user.set_password(user.password)
             user.save()
-            return redirect('user:login_page')
+            login(request,user)
+            return redirect('app:index')
         
     return render(request,'user/register.html',{'form':form})
 

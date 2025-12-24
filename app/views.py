@@ -1,5 +1,5 @@
 from django.shortcuts import render ,redirect
-from .models import Category , Product
+from .models import Category , Product,Comment
 from django.http import JsonResponse
 from app.forms import ProductModelForm,OrderModelForm,CommentModelForm,ContactForm
 from django.contrib import messages
@@ -11,17 +11,15 @@ from django.db.models import Avg
 from django.db.models.functions import Round
 from django.core.mail import EmailMessage
 from config.settings import DEFAULT_FROM_EMAIL
+from django.views.generic import CreateView
 
 
-
-
-# Create your views here.
 
 def index(request,category_id = None):
     search_query = request.GET.get('q','')
     filter_type = request.GET.get('filter_type','')
     
-    categories = Category.objects.all()
+    categories = Category.objects.all() # 'select * from all'
     
     if category_id:
         products = Product.objects.filter(category = category_id)
@@ -176,6 +174,34 @@ def create_comment(request,product_id):
     }
     return render(request,'app/detail.html',context)
 
+class CommentCreateView(CreateView):
+    model = Comment
+    form_class = CommentModelForm
+    template_name = 'app/detail.html'
+    
+
+    # product obyektini olish
+    def dispatch(self, request, *args, **kwargs):
+        self.product = get_object_or_404(Product, pk=kwargs['product_id'])
+        return super().dispatch(request, *args, **kwargs)
+
+    # commentni productga bog‘lab saqlash
+    def form_valid(self, form):
+        comment = form.save(commit=False)
+        comment.product = self.product
+        comment.save()
+        return redirect('app:detail', self.product.id)
+    
+    # def form_invalid(self, form):
+    #     response = super().form_invalid(form)
+    #     return response
+    
+
+    # templatega qo‘shimcha context uzatish
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['product'] = self.product
+        return context
         
         
 def contact_view(request):

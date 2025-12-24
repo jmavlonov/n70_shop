@@ -1,6 +1,8 @@
 from django.db import models
 from decimal import Decimal
 from django.templatetags.static import static
+from parler.models import TranslatableModel, TranslatedFields
+
 
 
 
@@ -14,8 +16,11 @@ class BaseModel(models.Model):
 
  
 
-class Category(BaseModel):
-    title = models.CharField(max_length=255, unique=True)
+class Category(TranslatableModel):
+    translations = TranslatedFields(
+        title = models.CharField(max_length=255)
+    )
+    
     
     def __str__(self):
         return self.title
@@ -26,9 +31,13 @@ class Category(BaseModel):
 
 # DRF => Don't repeat yourself
 
-class Product(BaseModel):
-    name = models.CharField(max_length=255)
-    description = models.TextField(null=True,blank=True)
+class Product(TranslatableModel):
+    translations = TranslatedFields(
+        name = models.CharField(max_length=255),
+        description = models.TextField(null=True,blank=True)   
+        )
+    
+   
     price = models.DecimalField(max_digits=14,decimal_places=2)
     image = models.ImageField(upload_to='products/',null=True,blank=True)
     stock = models.PositiveSmallIntegerField(default=1)

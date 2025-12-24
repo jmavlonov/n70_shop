@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-h108c9@_dr(51nkk1)^0@*(a42z7!4uwz^$i2t$zw5#t6fqq7@
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1','localhost']
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -43,6 +43,8 @@ INSTALLED_APPS = [
     'import_export',
     'adminsortable2',
     'user.apps.UserConfig',
+    'parler',
+
 
 
 ]
@@ -50,11 +52,16 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.locale.LocaleMiddleware',               # <-- LOCALE bu yerda bo'lishi shart
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    # Your Own Custom Middleware
+    'app.middleware.RequestLoggingMiddleware',
+    'app.middleware.AuthCheckMiddleWare',
+
 ]
 
 ROOT_URLCONF = 'config.urls'
@@ -82,8 +89,12 @@ WSGI_APPLICATION = 'config.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'n70_shop',
+        'USER': 'postgres',
+        'PASSWORD': '123',
+        'HOST': 'localhost',
+        'PORT': '5432'
     }
 }
 
@@ -111,6 +122,29 @@ AUTH_PASSWORD_VALIDATORS = [
 # https://docs.djangoproject.com/en/5.2/topics/i18n/
 
 LANGUAGE_CODE = 'en-us'
+
+LANGUAGES = [
+    ('uz', 'Uzbek'),
+    ('ru', 'Russian'),
+    ('en', 'English'),
+]
+
+
+LOCALE_PATHS = [
+    BASE_DIR / 'locale',
+]
+
+PARLER_LANGUAGES = {
+    None: (
+        {'code': 'uz'},
+        {'code': 'ru'},
+        {'code': 'en'},
+    ),
+    'default': {
+        'fallbacks': ['en'],  # agar tarjima topilmasa uz ko‘rsatiladi
+        'hide_untranslated': False,
+    }
+}
 
 TIME_ZONE = 'Asia/Tashkent'
 
